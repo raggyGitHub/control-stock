@@ -10,8 +10,19 @@ import java.util.Map;
 
 public class ProductoController {
 
-	public void modificar(String nombre, String descripcion, Integer id) {
-		// TODO
+	public int modificar(String nombre, String descripcion,Integer cantidad, Integer id) throws SQLException {
+		Connection con = new ConectionFactory().recuperaConexion();
+		Statement statement = con.createStatement();
+		statement.execute("UPDATE PRODUCTO SET "
+				+ " NOMBRE = '" + nombre + "'"
+				+ ", DESCRIPCION = '" + descripcion + "'"
+				+ ", CANTIDAD = " + cantidad
+				+ " WHERE ID = " + id);
+		int updateCount = statement.getUpdateCount();
+
+		con.close();
+
+		return updateCount;
 	}
 
 	public int eliminar(Integer id) throws SQLException {
@@ -50,10 +61,13 @@ public class ProductoController {
     public void guardar(Map<String,String> producto) throws SQLException {
 		Connection con = new ConectionFactory().recuperaConexion();
 		Statement statement = con.createStatement();
-		statement.execute("INSERT INTO PRODUCTO(nombre,descripcion,cantidad)"
+		String sqlInsert ="INSERT INTO PRODUCTO(nombre,descripcion,cantidad)"
 				+"VALUES('"+producto.get("NOMBRE") +"','"
 				+producto.get("DESCRIPCION")+"',"
-				+producto.get("CANTIDAD")+")",Statement.RETURN_GENERATED_KEYS);
+				+producto.get("CANTIDAD")+")";
+
+		System.out.println(sqlInsert);
+		statement.execute(sqlInsert,Statement.RETURN_GENERATED_KEYS);
 		ResultSet resultSet =statement.getGeneratedKeys();
 
 		while (resultSet.next()){
