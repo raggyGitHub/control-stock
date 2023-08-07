@@ -64,14 +64,45 @@ public class ProductoController {
 	}
 
     public void guardar(Map<String,String> producto) throws SQLException {
+
+		String nombre = producto.get("NOMBRE");
+		String descripcion = producto.get("DESCRIPCION");
+		Integer cantidad = Integer.valueOf(producto.get("CANTIDAD"));
+		Integer maximoCantidad = 50;
+
 		Connection con = new ConectionFactory().recuperaConexion();
+		con.setAutoCommit(false);
+
 		PreparedStatement statement = con.prepareStatement(
 				"INSERT INTO PRODUCTO" +
 				"(nombre,descripcion,cantidad)"+
 				"VALUES(?,?,?)",Statement.RETURN_GENERATED_KEYS);
-		statement.setString(1,producto.get("NOMBRE"));
-		statement.setString(2,producto.get("DESCRIPCION"));
-		statement.setInt(3,Integer.valueOf(producto.get("CANTIDAD")));
+		try{
+			do {
+				int cantidadParaGuardar = Math.min(cantidad,maximoCantidad);
+				ejecutaRegistro(statement, nombre, descripcion, cantidadParaGuardar);
+				cantidad -= maximoCantidad;
+			}while (cantidad>0);
+			con.commit();
+			System.out.println("COMMIT TRANSACTION");
+		}
+		catch (Exception e){
+			con.rollback();
+			System.out.println("ROLLBACK TRANSACTION");
+		}
+		statement.close();
+		con.close();
+	}
+
+	private static void ejecutaRegistro(PreparedStatement statement, String nombre, String descripcion, Integer cantidad) throws SQLException {
+
+		if (cantidad<50){
+			throw new RuntimeException("Ocurrio un error!!");
+		}
+
+		statement.setString(1, nombre);
+		statement.setString(2, descripcion);
+		statement.setInt(3, cantidad);
 //		String sqlInsert ="INSERT INTO PRODUCTO(nombre,descripcion,cantidad)"
 //				+"VALUES('"+producto.get("NOMBRE") +"','"
 //				+producto.get("DESCRIPCION")+"',"
@@ -80,7 +111,7 @@ public class ProductoController {
 //		System.out.println(sqlInsert);
 		//statement.execute(sqlInsert,Statement.RETURN_GENERATED_KEYS);
 		statement.execute();
-		ResultSet resultSet =statement.getGeneratedKeys();
+		ResultSet resultSet = statement.getGeneratedKeys();
 
 		while (resultSet.next()){
 			System.out.println(
@@ -89,6 +120,7 @@ public class ProductoController {
 			);
 
 		}
+		resultSet.close();
 	}
 
 }
