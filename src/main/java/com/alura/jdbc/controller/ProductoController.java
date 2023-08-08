@@ -102,6 +102,7 @@ public class ProductoController {
 				con.rollback();
 				System.out.println("ROLLBACK TRANSACTION");
 			}
+
 		}
 	}
 
@@ -124,6 +125,7 @@ public class ProductoController {
 								resultSet.getInt(1))
 				);
 			}
+
 		}
 	}
 
