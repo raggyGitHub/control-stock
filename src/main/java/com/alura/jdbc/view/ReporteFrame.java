@@ -1,22 +1,18 @@
 package com.alura.jdbc.view;
 
-import java.awt.Container;
-
-import javax.swing.JFrame;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
 import com.alura.jdbc.controller.CategoriaController;
-import com.alura.jdbc.controller.ProductoController;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 
 public class ReporteFrame extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
-    private JTable tablaReporte;
-    private DefaultTableModel modelo;
+    private final DefaultTableModel modelo;
 
-    private CategoriaController categoriaController;
+    private final CategoriaController categoriaController;
 
 
     public ReporteFrame(ControlDeStockFrame controlDeStockFrame) {
@@ -27,7 +23,7 @@ public class ReporteFrame extends JFrame {
         Container container = getContentPane();
         setLayout(null);
 
-        tablaReporte = new JTable();
+        JTable tablaReporte = new JTable();
         tablaReporte.setBounds(0, 0, 600, 400);
         container.add(tablaReporte);
 
