@@ -20,8 +20,8 @@ public class ProductoDAO {
 
             final PreparedStatement statement = con.prepareStatement(
                     "INSERT INTO PRODUCTO" +
-                            "(nombre,descripcion,cantidad)" +
-                            "VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                            "(nombre, descripcion, cantidad, categoria_id)" +
+                            "VALUES(?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             try (statement) {
                 ejecutaRegistro(statement, producto);
             }
@@ -38,6 +38,7 @@ public class ProductoDAO {
         statement.setString(1, producto.getNombre());
         statement.setString(2, producto.getDescripcion());
         statement.setInt(3, producto.getCantidad());
+        statement.setInt(4,producto.getCategoriaId());
 
         statement.execute();
 

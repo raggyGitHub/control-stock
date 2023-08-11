@@ -9,6 +9,12 @@ public class Categoria {
         this.nombre = nombre;
     }
 
+
+
+    public Integer getId() {
+        return this.id;
+    }
+
     @Override
     public String toString() {
         return this.nombre;

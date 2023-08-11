@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoriaController {
-    private CategoriaDAO categoriaDAO;
+    private final CategoriaDAO categoriaDAO;
 
     public CategoriaController(){
         var factory = new ConectionFactory();
