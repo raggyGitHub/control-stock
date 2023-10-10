@@ -115,9 +115,7 @@ public class ProductoDAO {
                 statement.setInt(3, cantidad);
                 statement.setInt(4, id);
                 statement.execute();
-
                 int updateCount = statement.getUpdateCount();
-
                 return updateCount;
             }
         } catch (SQLException e) {
